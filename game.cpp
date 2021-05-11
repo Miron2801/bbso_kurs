@@ -1,9 +1,11 @@
+#include <cstddef>
 #include <cstdlib>
 #include <iostream>
 #include <string>
 #include <sys/cdefs.h>
 #include "defs.h"
 #include <list>
+#include <unistd.h>
 
 using namespace std;
 
@@ -103,10 +105,6 @@ class Ducks_model
 };
 
 
-struct ducks_spis{
-       Ducks_model next_item;
-       int         id         = -1;
-};
 
 
 
@@ -141,10 +139,56 @@ class lake_model{
                         return cnt;
         }
 };
+class hunter_model{
+        public:
+                lake_model *farm;
+                string name_farm;
+                hunter_model(int count_ducks_max, string name_farm_b, std::list<Ducks_model> duck_b){
+                        lake_model farm_b ("qwe", duck_b);
+                        name_farm = name_farm_b;
+
+                }
+                void hunt(std::list<lake_model> *lakes){
+                        cout << "тсссс идет охота\n";
+                        std::cout << R"(
+|(
+| \
+|  )
+##-(------>        
+|  )
+| /
+|(
+)" << '\n';
+sleep(2);
+string s =  R"(
+|  ()";
+                for (int i = 0; i<100; i++){
+                        system("clear");
+                        cout << "тсссс идет охота\n";
+
+ 
+std::cout << R"(
+|(
+| \
+|  ))"<<s<<
+R"(##-------->)" <<
+R"(    
+|  )
+| /
+|(
+)" << '\n';
+     s = s + " ";
+        usleep(100000);
+}
+}
+        
+
+
+};
 class game{
 public:
         std::list<lake_model> lakes;
-
+        int game_started = 0;
         game(std::list<lake_model> lakes_b){
                 lakes = lakes_b;
         }
@@ -163,10 +207,19 @@ public:
                         return 2;
 
                 }
+                case 3:{
+                        std::list<Ducks_model> ducks_empt;
+                        hunter_model hunter(6, farm_name_def, ducks_empt);
+                        hunter.hunt(&lakes);
+
+                        return 2;
+
+                }
                 default:
                         cout << "Некорректный ввод. Повторите.";
+                        return -1;
                 }
-
+                return -1;
         }
         void run(){
                 system("clear");
@@ -174,16 +227,25 @@ public:
                         cout << '\n';
 			cout << "\033[32m1: Вывод уток по озерам\033[0m"<< "\n";
 			cout << "\033[33m2: Вывод колличества уток на озерах\033[0m"<< "\n";
-			//cout << "\033[34m3: Вывод людей в файле;\033[0m"<< "\n";
-			//cout << "\033[34m4: Колличество строк в файле;\033[0m"<< "\n";
+                        if(game_started){
 
-
-			//cout << "\033[31m0: выход;\033[0m"<< "\n";
+                                cout << "\033[34m3: Следующий день\033[0m"<< "\n";
+                        }
+                        else{
+                                cout << "\033[34m3: Начать игру.\033[0m"<< "\n";
+                                game_started = 1;
+                        }
+			cout << "\033[31m-1: выход;\033[0m"<< "\n";
 			cout << "Введите код: >> " ;
-                        int changer = 0;
+                        cout << "\033[31m";
+                        int changer;
                         cin >> changer;
+                        if(changer == -1){
+                                return;
+                        }
+                        cout << "\033[0m\n";  
                         menu_processor(changer);       
-                        system("clear");
+                        //system("clear");
 
                 }
 
@@ -208,10 +270,14 @@ public:
                         }
                         cout << "\033[0m\n";     
                         int i = 0;
+                        
                         for (lake_model lake : lakes){
                                         if(i != changer) {i++; continue;}
                                         else {  
-                                                lake.tell_ducks();
+                                                if(lake.сount_ducks() >0)
+                                                        lake.tell_ducks();
+                                                else 
+                                                        cout << "\033[31m На этом озере нет уток \033[0m\n";
                                                 break;
                                         }
                                 }
@@ -234,7 +300,7 @@ public:
                                         a++;
                                 }
 
-                        cout << "Колличество уток с каого озера вывести? -1 - выход>> ";
+                        cout << "Колличество уток с какого озера вывести? -1 - выход>> ";
                         cout << "\033[31m";
                         int changer;
                         cin >> changer;
