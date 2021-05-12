@@ -150,7 +150,7 @@ class hunter_model{
                 }
                 void hunt(std::list<lake_model> *lakes){
                         cout << "тсссс идет охота\n";
-                        std::cout << R"(
+           /*             std::cout << R"(
 |(
 | \
 |  )
@@ -180,6 +180,19 @@ R"(
      s = s + " ";
         usleep(100000);
 }
+*/
+        for (lake_model &lake : *lakes){
+                        if(lake.сount_ducks() != 0){
+                                lake.ducks.erase(lake.ducks.begin());
+                                cout << "На озере: "<< lake.name << " колличество уток:" << lake.сount_ducks() << '\n';
+                        }else{
+
+                                cout << "На озере: "<< lake.name << " колличество уток:" << lake.сount_ducks() << '\n';
+
+
+                        }
+                }
+
 }
         
 
