@@ -143,9 +143,9 @@ class hunter_model{
         public:
                 lake_model *farm;
                 string name_farm;
-                hunter_model(int count_ducks_max, string name_farm_b, std::list<Ducks_model> duck_b){
-                        lake_model farm_b ("qwe", duck_b);
-                        name_farm = name_farm_b;
+                hunter_model(std::list<Ducks_model> duck_b){
+                        lake_model farm_b (farm_name_def, duck_b);
+                        name_farm = farm_name_def;
 
                 }
                 void hunt(std::list<lake_model> *lakes){
@@ -181,20 +181,36 @@ R"(
         usleep(100000);
 }
 */
+        int lake_to_hunt  = get_random(0, 4);
+        int checker = 0;
+        
         for (lake_model &lake : *lakes){
-                        if(lake.сount_ducks() != 0){
-                                lake.ducks.erase(lake.ducks.begin());
-                                cout << "На озере: "<< lake.name << " колличество уток:" << lake.сount_ducks() << '\n';
+
+                if(lake_to_hunt == checker){
+                        if(lake.сount_ducks() > 0){
+                                int how_many_to_delete = get_random(1, 6);
+                                for(int it = 0; it < how_many_to_delete && lake.сount_ducks(); it++)
+                                        if(how_many_to_delete > 0){
+                                                if(get_random(0, 2)){ 
+                                                        lake.ducks.erase(lake.ducks.begin());
+                                                        cout << "Из озера " <<lake.name <<" Удалена утка\n";
+                                                }
+                                        }else {
+                                                break;
+                                        }
+                                        
+                                
                         }else{
 
-                                cout << "На озере: "<< lake.name << " колличество уток:" << lake.сount_ducks() << '\n';
-
-
+                                cout << "На озере на которое пришел охотник не оказалось уток и он пошел бухать\n";
+                                break;
                         }
+                        
                 }
+                checker++;
 
-}
-        
+        }
+}     
 
 
 };
@@ -222,7 +238,7 @@ public:
                 }
                 case 3:{
                         std::list<Ducks_model> ducks_empt;
-                        hunter_model hunter(6, farm_name_def, ducks_empt);
+                        hunter_model hunter(ducks_empt);
                         hunter.hunt(&lakes);
 
                         return 2;
