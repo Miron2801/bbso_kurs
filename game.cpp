@@ -120,7 +120,7 @@ class lake_model{
         std::list<Ducks_model> ducks;
 
         lake_model(string name_b, std::list<Ducks_model> duck_b){
-                        cout << "Инициализация озер: " << endl;
+                        cout << "Инициализация озер: " << name_b << endl;
                         ducks = duck_b;
                         name = name_b;
 
@@ -141,11 +141,18 @@ class lake_model{
 };
 class hunter_model{
         public:
-                lake_model *farm;
+
+                //lake_model *farm;
                 string name_farm;
+                std::list<Ducks_model> ducks;
+                lake_model farm = lake_model(farm_name_def, ducks);
+
                 hunter_model(std::list<Ducks_model> duck_b){
-                        lake_model farm_b (farm_name_def, duck_b);
                         name_farm = farm_name_def;
+                        cout << farm.name << " инициализировано\n";
+                }
+                void process_farm(){
+                        cout << "Колличество уток на ферме стало " << farm.сount_ducks();
 
                 }
                 void hunt(std::list<lake_model> *lakes){
@@ -183,21 +190,46 @@ R"(
 */
         int lake_to_hunt  = get_random(0, 4);
         int checker = 0;
-        
+
         for (lake_model &lake : *lakes){
 
                 if(lake_to_hunt == checker){
                         if(lake.сount_ducks() > 0){
                                 int how_many_to_delete = get_random(1, 6);
-                                for(int it = 0; it < how_many_to_delete && lake.сount_ducks(); it++)
+                                for(int iter = 0; iter < how_many_to_delete && lake.сount_ducks(); iter++)
                                         if(how_many_to_delete > 0){
-                                                if(get_random(0, 2)){ 
-                                                        lake.ducks.erase(lake.ducks.begin());
-                                                        cout << "Из озера " <<lake.name <<" Удалена утка\n";
-                                                }
-                                        }else {
-                                                break;
+                                                  for (std::list<Ducks_model>::iterator it=lake.ducks.begin(); it != lake.ducks.end() && lake.сount_ducks() && how_many_to_delete; it++){
+                                                  //  for (Ducks_model &it: lake.ducks){
+                                                                if((*it).can.byte == 1){
+                                                                        if(get_random(0, 2)){
+                                                                                cout << "Поймана утка которая умеет кусаться\n";
+                                                                                farm.ducks.push_back(*it);
+                                                                                lake.ducks.erase(it);    
+                                                                                it++;
+                                                                                how_many_to_delete--;
+                                                                                continue;
+                                                                        }
+                                                                        else {
+                                                                                cout << "Была попытка поймать утку которая умеет кусаться но охотник обосрался\n";
+                                                                                continue;
+                                                                        }
+                                                                }
+                                                                else {
+                                                                        farm.ducks.push_back(*it);
+                                                                        lake.ducks.erase(it); 
+                                                                        it++;   
+                                                                        how_many_to_delete--;
+                                                                        cout << "Поймана утка\n";
+                                                                        continue;
+
+                                                                }
+
+
                                         }
+                                        
+                                        }else 
+                                                break;
+                                        
                                         
                                 
                         }else{
@@ -240,8 +272,8 @@ public:
                         std::list<Ducks_model> ducks_empt;
                         hunter_model hunter(ducks_empt);
                         hunter.hunt(&lakes);
-
-                        return 2;
+                        hunter.process_farm();
+                        return 3;
 
                 }
                 default:
@@ -283,18 +315,19 @@ public:
                 system("clear");
                 while(1){
                         int a = 0;
-                        cout << "\nСписок озер\n";
+                        cout << "\n\033[31mСписок озер\033[0m\n";
                         for (lake_model lake : lakes){
                                         
-                                        cout<<"\033[32m" << a << ") " + lake.name << "\033[0m\n";
+                                        cout<< a << ") \033[32m" + lake.name << "\033[0m\n";
                                         a++;
                                 }
 
-                        cout << "уток с каого озера вывести? -1 - выход>> ";
+                        cout << "Уток с какого озера вывести? \033[32m-1 - выход \033[0m>> ";
                         cout << "\033[31m";
                         int changer;
                         cin >> changer;
                         if(changer == -1){
+                                system("clear");
                                 return;
                         }
                         cout << "\033[0m\n";     
@@ -322,10 +355,10 @@ public:
                 system("clear");
                 while(1){
                         int a = 0;
-                        cout << "\nСписок озер\n";
+                        cout << "\n\033[31mСписок озер\033[0m\n";
                         for (lake_model lake : lakes){
                                         
-                                        cout<<"\033[32m" << a << ") " + lake.name << "\033[0m\n";
+                                        cout<< a << ")\033[32m " + lake.name << "\033[0m\n";
                                         a++;
                                 }
 
@@ -334,6 +367,7 @@ public:
                         int changer;
                         cin >> changer;
                         if(changer == -1){
+                                system("clear");
                                 return;
                         }
                         cout << "\033[0m\n";     
