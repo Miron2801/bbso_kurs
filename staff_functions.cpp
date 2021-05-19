@@ -53,6 +53,7 @@ class menu {
 											can_model 		      can;
 											attribute_model       attribute;
 											if(lakes_names[lake_cnt] == "Аргентино"){
+													attribute.mother_lake_name = "Аргентино";
 													if(get_random(1, 2) == 1){
 															can.can_fly = 1;
 														can.know_were_live = 1;
@@ -74,6 +75,7 @@ class menu {
 													}
 											}
 											if(lakes_names[lake_cnt] == "Тахо"){
+													attribute.mother_lake_name = "Тахо";
 													if(get_random(1, 2) == 1){
 														can.can_swimm = 1;
 														can.know_were_live = 1;
@@ -95,6 +97,7 @@ class menu {
 
 											}											
 											if(lakes_names[lake_cnt] == "Танганьика"){
+													attribute.mother_lake_name = "Танганьика";
 													if(get_random(1, 2) == 1){
 														can.can_swimm = 1;
 														can.know_were_live = 1;
@@ -116,6 +119,7 @@ class menu {
 												
 											}	
 											if(lakes_names[lake_cnt] == "Тоба"){
+													attribute.mother_lake_name = "Тоба";
 													if(get_random(1, 2) == 1){
 														can.can_fly = 1;
 														can.know_were_live = 0;
