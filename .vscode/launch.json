@@ -21,6 +21,20 @@
       ],
       "preLaunchTask": "g++ build active file",
       "miDebuggerPath": "/usr/bin/gdb"
+    },
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "/home/miron/Курсач ББСО",
+      "environment": [],
+      "program": "/home/miron/Курсач ББСО/build/Debug/outDebug",
+      "internalConsoleOptions": "openOnSessionStart",
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "externalConsole": false
     }
   ]
 }

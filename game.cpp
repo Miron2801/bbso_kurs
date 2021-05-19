@@ -140,11 +140,13 @@ class lake_model{
         }
 };
 class hunter_model{
+        private:
+                std::list<Ducks_model> ducks;
+
         public:
 
                 //lake_model *farm;
                 string name_farm;
-                std::list<Ducks_model> ducks;
                 lake_model farm = lake_model(farm_name_def, ducks);
 
                 hunter_model(std::list<Ducks_model> duck_b){
@@ -157,7 +159,7 @@ class hunter_model{
                 }
                 void hunt(std::list<lake_model> *lakes){
                         cout << "тсссс идет охота\n";
-           /*             std::cout << R"(
+                        std::cout << R"(
 |(
 | \
 |  )
@@ -185,9 +187,9 @@ R"(
 |(
 )" << '\n';
      s = s + " ";
-        usleep(100000);
+        //usleep(100000);
 }
-*/
+
         int lake_to_hunt  = get_random(0, 4);
         int checker = 0;
 
@@ -203,9 +205,10 @@ R"(
                                                                 if((*it).can.byte == 1){
                                                                         if(get_random(0, 2)){
                                                                                 cout << "Поймана утка которая умеет кусаться\n";
+                                                                                auto duck_to_del = it;
                                                                                 farm.ducks.push_back(*it);
-                                                                                lake.ducks.erase(it);    
                                                                                 it++;
+                                                                                lake.ducks.erase(duck_to_del);    
                                                                                 how_many_to_delete--;
                                                                                 continue;
                                                                         }
@@ -215,11 +218,12 @@ R"(
                                                                         }
                                                                 }
                                                                 else {
-                                                                        farm.ducks.push_back(*it);
-                                                                        lake.ducks.erase(it); 
-                                                                        it++;   
-                                                                        how_many_to_delete--;
-                                                                        cout << "Поймана утка\n";
+                                                                                cout << "Поймана утка\n";
+                                                                                auto duck_to_del = it;
+                                                                                farm.ducks.push_back(*it);
+                                                                                it++;
+                                                                                lake.ducks.erase(duck_to_del);    
+                                                                                how_many_to_delete--;
                                                                         continue;
 
                                                                 }
@@ -250,6 +254,10 @@ class game{
 public:
         std::list<lake_model> lakes;
         int game_started = 0;
+        std::list<Ducks_model> ducks_empt;
+
+        hunter_model hunter = hunter_model(ducks_empt);
+
         game(std::list<lake_model> lakes_b){
                 lakes = lakes_b;
         }
@@ -269,13 +277,21 @@ public:
 
                 }
                 case 3:{
-                        std::list<Ducks_model> ducks_empt;
-                        hunter_model hunter(ducks_empt);
+
                         hunter.hunt(&lakes);
                         hunter.process_farm();
                         return 3;
 
                 }
+                case 4:
+
+                        cout << "Колличество уток на ферме: " <<hunter.farm.сount_ducks() << "\n";
+
+                
+                case 5:
+                                hunter.farm.tell_ducks();
+                                
+                
                 default:
                         cout << "Некорректный ввод. Повторите.";
                         return -1;
@@ -288,6 +304,7 @@ public:
                         cout << '\n';
 			cout << "\033[32m1: Вывод уток по озерам\033[0m"<< "\n";
 			cout << "\033[33m2: Вывод колличества уток на озерах\033[0m"<< "\n";
+
                         if(game_started){
 
                                 cout << "\033[34m3: Следующий день\033[0m"<< "\n";
@@ -296,6 +313,9 @@ public:
                                 cout << "\033[34m3: Начать игру.\033[0m"<< "\n";
                                 game_started = 1;
                         }
+                        cout << "\033[33m4: Вывод колличества уток на ферме\033[0m"<< "\n";
+			cout << "\033[33m5: Вывод уток на ферме\033[0m"<< "\n";
+
 			cout << "\033[31m-1: выход;\033[0m"<< "\n";
 			cout << "Введите код: >> " ;
                         cout << "\033[31m";

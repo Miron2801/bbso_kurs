@@ -1,8 +1,12 @@
 {
-    "files.associations": {
-        "fstream": "cpp",
-        "iostream": "cpp",
-        "new": "cpp",
-        "*.tcc": "cpp"
-    }
+  "files.associations": {
+    "fstream": "cpp",
+    "iostream": "cpp",
+    "new": "cpp",
+    "*.tcc": "cpp"
+  },
+  "C_Cpp_Runner.cCompilerPath": "/usr/bin/gcc",
+  "C_Cpp_Runner.cppCompilerPath": "/usr/bin/g++",
+  "C_Cpp_Runner.debuggerPath": "/usr/bin/gdb",
+  "C_Cpp_Runner.makePath": "/usr/bin/make"
 }
