@@ -126,11 +126,66 @@ class lake_model{
     public:
         string name = "";
         std::list<Ducks_model> ducks;
-        attribute_model cnt_attr;
+        can_model cnt_can;
         lake_model(string name_b, std::list<Ducks_model> duck_b){
-                        cout << "Инициализация озер: \033[31m" << name_b << "\033[0m\n";
+                        cnt_can.can_fly        = 0;
+                        cnt_can.know_were_live = 0;
+                        cnt_can.can_krya       = 0;
+                        cnt_can.can_swimm      = 0;
+                        cnt_can.can_fish       = 0;
+                        cnt_can.can_do_nothong = 0;
+                        cnt_can.byte           = 0;
                         ducks = duck_b;
                         name = name_b;
+                        for(Ducks_model duck :ducks){
+                                if(duck.can.can_fly > 0)
+                                        cnt_can.can_fly++;
+                                if(duck.can.know_were_live  > 0)
+                                        cnt_can.know_were_live++;	
+                                if(duck.can.can_krya  > 0)
+                                        cnt_can.can_krya++;
+                                if(duck.can.can_swimm  > 0)
+                                        cnt_can.can_swimm++;
+                                if(duck.can.can_swimm  > 0)
+                                        cnt_can.can_swimm++;
+                                if(duck.can.can_do_nothong  > 0)
+                                        cnt_can.can_do_nothong++;
+                                if(duck.can.byte  > 0)
+                                        cnt_can.byte++;
+
+                        }
+        }
+        void del_duck(Ducks_model duck_to_del){
+                                if(duck_to_del.can.can_fly  > 0)
+                                        cnt_can.can_fly--;
+                                if(duck_to_del.can.know_were_live  > 0)
+                                        cnt_can.know_were_live--;	
+                                if(duck_to_del.can.can_krya  > 0)
+                                        cnt_can.can_krya--;
+                                if(duck_to_del.can.can_swimm  > 0)
+                                        cnt_can.can_swimm--;
+                                if(duck_to_del.can.can_swimm  > 0)
+                                        cnt_can.can_swimm--;
+                                if(duck_to_del.can.can_do_nothong  > 0)
+                                        cnt_can.can_do_nothong--;
+                                if(duck_to_del.can.byte  > 0)
+                                        cnt_can.byte--;
+        }
+        void add_duck(Ducks_model duck_to_add){
+                                if(duck_to_add.can.can_fly  > 0)
+                                        cnt_can.can_fly++;
+                                if(duck_to_add.can.know_were_live  > 0)
+                                        cnt_can.know_were_live++;	
+                                if(duck_to_add.can.can_krya  > 0)
+                                        cnt_can.can_krya++;
+                                if(duck_to_add.can.can_swimm  > 0)
+                                        cnt_can.can_swimm++;
+                                if(duck_to_add.can.can_swimm  > 0)
+                                        cnt_can.can_swimm++;
+                                if(duck_to_add.can.can_do_nothong  > 0)
+                                        cnt_can.can_do_nothong++;
+                                if(duck_to_add.can.byte  > 0)
+                                        cnt_can.byte++;     
 
         }
         void tell_ducks(){
@@ -375,11 +430,60 @@ public:
                                 hunter.farm.tell_ducks();
                                 break;
                 }
+                case 6:{
+                                out_by_attr();
+                                break;
+                }
                 default:
                         cout << "Некорректный ввод. Повторите.";
                         break;
                 }
                 return -1;
+        }
+        void out_by_attr(){
+                system("clear");
+                while(1){
+                        int a = 0;
+                        cout << "\n\033[31mСписок озер\033[0m\n";
+                        for (lake_model lake : lakes){
+                                        
+                                        cout<< a << ")\033[32m " + lake.name << "\033[0m\n";
+                                        a++;
+                                }
+
+                        cout << "Колличество уток с какого озера вывести? -1 - выход>> ";
+                        cout << "\033[31m";
+                        int changer;
+                        cin >> changer;
+                        if(changer == -1){
+                                system("clear");
+                                return;
+                        }
+                        cout << "\033[0m\n";     
+                        int i = 0;
+                        for (lake_model lake : lakes){
+                                        if(i != changer) {i++; continue;}
+                                        else {  
+
+                                                cout << "+=========================+\n";
+                                                cout << "|Умение      |Колличество |\n";
+                                                cout << "+-------------------------+\n";
+                                                cout << "|Летают               |"<< lake.cnt_can.can_fly<<" |\n";
+                                                cout << "|Знают где живут      |"<< lake.cnt_can.know_were_live<<" |\n";
+                                                cout << "|Крякают              |"<< lake.cnt_can.can_krya<<" |\n";
+                                                cout << "|плавают              |"<< lake.cnt_can.can_swimm<<" |\n";
+                                                cout << "|Рыбачат              |"<< lake.cnt_can.can_fish<<" |\n";
+                                                cout << "|Отдыхают             |"<< lake.cnt_can.can_do_nothong<<" |\n";
+                                                cout << "|Кусаться             |"<< lake.cnt_can.byte<<" |\n";
+                                                cout << "+=========================+\n";
+                                                break;
+                                               
+                                        }
+                                }
+        
+
+                }
+
         }
         void run(){
                 system("clear");
@@ -398,6 +502,7 @@ public:
                         
                         cout << "\033[35m4: Вывод колличества уток на ферме\033[0m"<< "\n";
 			cout << "\033[36m5: Вывод уток на ферме\033[0m"<< "\n";
+			cout << "\033[37m6: Вывод уток по характеристикам\033[0m"<< "\n";
 
 			cout << "\033[31m-1: выход;\033[0m"<< "\n";
 			cout << "Введите код: >> " ;

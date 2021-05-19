@@ -16,29 +16,6 @@ class menu {
 						cout << "Выход";
 						break;
 					case 1:{
-							can_model 		can;
-							attribute_model attribute;
-							can.byte = 1;
-							attribute.age = 11;
-							attribute.name_duck = "}{Yй";
-							Ducks_model duck(attribute,can);
-							duck.say_characteristics();
-							break;
-
-						}
-					case 2:{
-
-
-
-						break;	
-					}
-					case 3:
-						{
-							cout << get_random(0, 10) << "\n";
-							break;
-						}
-					case 4:{
-
 
 							std::list<lake_model> lakes;
 
@@ -156,12 +133,8 @@ class menu {
 	        }
 		void echo_menu(){			
 			cout << '\n';
-			cout << "\033[32m1: Вывод состояния утки;\033[0m"<< "\n";
-			cout << "\033[33m2: Играть;\033[0m"<< "\n";
-			cout << "\033[34m3: Ранжомное значение\033[0m"<< "\n";
-			cout << "\033[34m4: Начало игры\033[0m"<< "\n";
 
-
+			cout << "\033[34m1: Начало игры\033[0m"<< "\n";
 			cout << "\033[31m0: выход;\033[0m"<< "\n";
 			cout << "Введите код: >> " ;
 		}
