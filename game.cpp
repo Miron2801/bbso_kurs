@@ -23,6 +23,8 @@ struct attribute_model {
                 int age             = -1;
                 int strength        = -1;
                 int hobby           = -1;
+                int cnt_catches     =  0;
+                int can_escape      =  1;
 };
 
 struct can_model{
@@ -33,7 +35,7 @@ struct can_model{
                 int can_fish       = -1;
                 int can_do_nothong = -1;
                 int byte           = -1;
-};     
+};             
 
 
 class Ducks_model
@@ -78,6 +80,10 @@ class Ducks_model
                                 cout << "|Сила утки        " << "   |   " << attribute.strength<< '\n';
                         if(attribute.hobby != -1)
                                 cout << "|Хобби утки       " << "   |   " << attribute.hobby<< '\n';
+                        if(attribute.can_escape != -1)
+                                cout << "|Может еще сбежать" << "   |   " << attribute.can_escape<< '\n';        
+                        if(attribute.cnt_catches != -1)
+                                cout << "|Была поймана     " << "   |   " << attribute.cnt_catches<< '\n';
                    cout << "+------------------------------------+\n";
                    cout << "|Умения                               \n";
                         if(can.can_fly != -1)
@@ -93,7 +99,7 @@ class Ducks_model
                         if(can.can_do_nothong != -1)
                                 cout << "|Стредать херней  " << "   |   " << can.can_do_nothong<< '\n';
                         if(can.byte != -1)
-                                cout << "|Кусаться         " << "   |   " << can.byte<< '\n';
+                                cout << "|Кусаться         " << "   |   " << can.byte<< '\n';    
                    cout << "+------------------------------------+"<< '\n';
 
 
@@ -126,11 +132,18 @@ class lake_model{
 
         }
         void tell_ducks(){
+                
                         cout << "На озере: " << name << '\n';
+                        int i = 0;
                         for (Ducks_model duck_b : ducks){
+                                i++;
                                 cout <<"\n"<< name << "\n"; 
                                 duck_b.say_characteristics();
                         }
+                        if(i == 0)
+                                cout << "Нет уток\n";
+                        
+                        cout << "\n";
         }
         int сount_ducks(){
                         int cnt = 0;
@@ -155,7 +168,7 @@ class hunter_model{
                 }
                 void process_farm(){
                         cout << "Колличество уток на ферме стало " << farm.сount_ducks();
-
+                                
                 }
                 void hunt(std::list<lake_model> *lakes){
                         cout << "тсссс идет охота\n";
@@ -205,7 +218,12 @@ R"(
                                                                 if((*it).can.byte == 1){
                                                                         if(get_random(0, 2)){
                                                                                 cout << "Поймана утка которая умеет кусаться\n";
+                                                                                if((*it).attribute.cnt_catches == 1)
+                                                                                           (*it).attribute.can_escape = 0;
+                                                                                
+                                                                                (*it).attribute.cnt_catches++;
                                                                                 auto duck_to_del = it;
+                                                                                
                                                                                 farm.ducks.push_back(*it);
                                                                                 it++;
                                                                                 lake.ducks.erase(duck_to_del);    
@@ -219,11 +237,17 @@ R"(
                                                                 }
                                                                 else {
                                                                                 cout << "Поймана утка\n";
+                                                                                if((*it).attribute.cnt_catches == 1)
+                                                                                           (*it).attribute.can_escape = 0;
+                                                                                
+                                                                                (*it).attribute.cnt_catches++;
                                                                                 auto duck_to_del = it;
+                                                                                
                                                                                 farm.ducks.push_back(*it);
                                                                                 it++;
                                                                                 lake.ducks.erase(duck_to_del);    
                                                                                 how_many_to_delete--;
+                                                                                continue;
                                                                         continue;
 
                                                                 }
@@ -269,7 +293,7 @@ public:
                 switch (code) {
                 case 1:{
                         send_caracteristics();
-                        return 1;
+                        break;
                 }
                 case 2:{
                         send_counts();
@@ -277,24 +301,31 @@ public:
 
                 }
                 case 3:{
-
+                        game_started = 1;
                         hunter.hunt(&lakes);
                         hunter.process_farm();
-                        return 3;
+                        break;
 
                 }
-                case 4:
-
-                        cout << "Колличество уток на ферме: " <<hunter.farm.сount_ducks() << "\n";
-
-                
-                case 5:
+                case 4:{
+                                int cnt = hunter.farm.сount_ducks();
+                                if(cnt){
+                                        cout << "Колличество уток на ферме: " << cnt << "\n";
+                                        break;
+                                }
+                                else{
+                                        cout<< "Нет уток на ферме\n";
+                                        break;
+                                }
+                                break;
+                }
+                case 5:{
                                 hunter.farm.tell_ducks();
-                                
-                
+                                break;
+                }
                 default:
                         cout << "Некорректный ввод. Повторите.";
-                        return -1;
+                        break;
                 }
                 return -1;
         }
@@ -305,14 +336,14 @@ public:
 			cout << "\033[32m1: Вывод уток по озерам\033[0m"<< "\n";
 			cout << "\033[33m2: Вывод колличества уток на озерах\033[0m"<< "\n";
 
-                        if(game_started){
+                        if(game_started)
 
                                 cout << "\033[34m3: Следующий день\033[0m"<< "\n";
-                        }
-                        else{
+                        
+                        else
                                 cout << "\033[34m3: Начать игру.\033[0m"<< "\n";
-                                game_started = 1;
-                        }
+                                
+                        
                         cout << "\033[33m4: Вывод колличества уток на ферме\033[0m"<< "\n";
 			cout << "\033[33m5: Вывод уток на ферме\033[0m"<< "\n";
 
@@ -356,7 +387,7 @@ public:
                         for (lake_model lake : lakes){
                                         if(i != changer) {i++; continue;}
                                         else {  
-                                                if(lake.сount_ducks() >0)
+                                                if(lake.сount_ducks() > 0)
                                                         lake.tell_ducks();
                                                 else 
                                                         cout << "\033[31m На этом озере нет уток \033[0m\n";
